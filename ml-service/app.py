@@ -1,5 +1,6 @@
 import sys
 import io
+import os
 
 # Force UTF-8 on Windows (avoids charmap codec errors with emoji in logs)
 if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
@@ -26,6 +27,12 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 CORS(app)
+
+# Log startup config so it's visible in Render logs
+_use_transformer = os.getenv("SEMANTIC_MODEL_SHARED", "1") != "0"
+logger.info(f"Semantic similarity mode: {'sentence-transformers' if _use_transformer else 'TF-IDF (lightweight)'}")
+if _use_transformer:
+    logger.warning("SEMANTIC_MODEL_SHARED=1 — sentence-transformers will load ~300MB model. Set SEMANTIC_MODEL_SHARED=0 on Render free tier to avoid OOM crashes.")
 
 
 @app.route('/health', methods=['GET'])
