@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import axios from 'axios'
+import api from '../api'
 import { CheckCircle, XCircle, Plus, Zap, ArrowLeft, History, TrendingUp, Award } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts'
@@ -58,10 +58,10 @@ export default function ResultsPage() {
     const fetchResult = async () => {
       try {
         const token = await getToken()
-        const { data } = await axios.get(`/api/result/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+        const { data } = await api.get(`/api/result/${id}`, { headers: { Authorization: `Bearer ${token}` } })
         setResult(data)
         
-        const histRes = await axios.get(`/api/history`, { headers: { Authorization: `Bearer ${token}` } })
+        const histRes = await api.get(`/api/history`, { headers: { Authorization: `Bearer ${token}` } })
         if (histRes.data && histRes.data.analyses) {
           setHistory(histRes.data.analyses.slice(0, 5).reverse())
         }

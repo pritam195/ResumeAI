@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import axios from 'axios'
+import api from '../api'
 import { Clock, ArrowRight, Zap, Trash2, Award } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -34,7 +34,7 @@ export default function HistoryPage() {
     const fetchHistory = async () => {
       try {
         const token = await getToken()
-        const { data } = await axios.get('/api/history', { headers: { Authorization: `Bearer ${token}` } })
+        const { data } = await api.get('/api/history', { headers: { Authorization: `Bearer ${token}` } })
         setAnalyses(data.analyses || [])
       } catch {
         toast.error('Failed to load history')
@@ -50,7 +50,7 @@ export default function HistoryPage() {
     setDeleting(id)
     try {
       const token = await getToken()
-      await axios.delete(`/api/result/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+      await api.delete(`/api/result/${id}`, { headers: { Authorization: `Bearer ${token}` } })
       setAnalyses(prev => prev.filter(a => a._id !== id))
       toast.success('Analysis deleted')
     } catch {

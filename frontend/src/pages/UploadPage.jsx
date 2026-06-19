@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDropzone } from 'react-dropzone'
 import { useAuth } from '../contexts/AuthContext'
-import axios from 'axios'
+import api from '../api'
 import toast from 'react-hot-toast'
 import { Upload, FileText, Briefcase, Zap, CheckCircle, X } from 'lucide-react'
 
@@ -69,7 +69,7 @@ export default function UploadPage() {
       formData.append('job_description', jobDescription)
       formData.append('uid', user.uid)
 
-      const { data } = await axios.post('/api/analyze', formData, {
+      const { data } = await api.post('/api/analyze', formData, {
         headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` },
       })
       clearInterval(interval)
