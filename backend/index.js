@@ -13,6 +13,10 @@ const historyRoutes = require('./routes/history');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Required for Render/Heroku/Railway – they sit behind a reverse proxy
+// Without this, express-rate-limit throws ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
+app.set('trust proxy', 1);
+
 // Security & middleware
 // app.use(helmet({ 
 //   crossOriginEmbedderPolicy: false,
@@ -27,6 +31,8 @@ const PORT = process.env.PORT || 5000;
 // });
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:3000').split(',').map(o => o.trim());
 app.use(cors({ origin: allowedOrigins, credentials: true }));
+
+
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
