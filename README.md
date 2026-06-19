@@ -4,13 +4,23 @@ AI-powered ATS simulator that compares resumes against job descriptions, generat
 
 ## 📸 Screenshots
 
-| Home | Analyze | History |
-|------|---------|---------|
-| ![Home](screenshots/home.png) | ![Analyze](screenshots/analysis.png) | ![History](screenshots/history.png) |
+### Home
+![Home](screenshots/home.png)
 
-| Score Breakdown | Skill Gap | AI Feedback |
-|-----------------|-----------|-------------|
-| ![Score](screenshots/score.png) | ![Skill](screenshots/skill.png) | ![Feedback](screenshots/feedback.png) |
+### Analyze
+![Analyze](screenshots/analysis.png)
+
+### History
+![History](screenshots/history.png)
+
+### Score Breakdown
+![Score](screenshots/score.png)
+
+### Skill Gap
+![Skill](screenshots/skill.png)
+
+### AI Feedback
+![Feedback](screenshots/feedback.png)
 
 ## 🗂️ Project Structure
 
