@@ -34,22 +34,22 @@ router.post('/analyze', verifyToken, upload.single('resume'), async (req, res) =
     });
     form.append('job_description', job_description);
 
-    // Wake up ML service — retry up to 5x with 8s gaps (Render free tier cold start can take ~30-40s)
+    // Wake up ML service — retry up to 10x with 8s gaps (Render free tier cold start can take ~60-90s)
     const ML_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000';
     let mlReady = false;
-    for (let attempt = 1; attempt <= 5; attempt++) {
+    for (let attempt = 1; attempt <= 10; attempt++) {
       try {
         await axios.get(`${ML_URL}/health`, { timeout: 15000 });
         console.log(`ML service ready on attempt ${attempt}`);
         mlReady = true;
         break;
       } catch (e) {
-        console.warn(`ML warm-up attempt ${attempt}/5: ${e.message}`);
-        if (attempt < 5) await new Promise(r => setTimeout(r, 8000));
+        console.warn(`ML warm-up attempt ${attempt}/10: ${e.message}`);
+        if (attempt < 10) await new Promise(r => setTimeout(r, 8000));
       }
     }
     if (!mlReady) {
-      return res.status(503).json({ error: 'ML service is starting up. Please wait 30 seconds and try again.' });
+      return res.status(503).json({ error: 'ML service is taking longer than usual to start up. Please wait 60 seconds and try again.' });
     }
 
     const mlResponse = await axios.post(
