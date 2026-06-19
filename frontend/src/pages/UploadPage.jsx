@@ -88,7 +88,7 @@ export default function UploadPage() {
   }
 
   return (
-    <div style={{ maxWidth: 820, margin: '0 auto', padding: '40px 24px', minHeight: 'calc(100vh - 64px)' }}>
+    <div className="max-w-[820px] mx-auto py-8 px-4 md:py-10 md:px-6 min-h-[calc(100vh-64px)]">
       {/* Header */}
       <div style={{ marginBottom: 36 }}>
         <h1 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 32, color: 'var(--text-primary)', marginBottom: 8 }}>
@@ -98,23 +98,23 @@ export default function UploadPage() {
       </div>
 
       {/* Steps indicator */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 36 }}>
+      <div className="flex items-center gap-2 md:gap-0 mb-8 overflow-x-auto pb-2 hide-scrollbar w-full">
         {STEPS.map((s, i) => (
-          <div key={s} style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+          <div key={s} className="flex items-center shrink-0 md:flex-1">
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, background: step >= i ? 'linear-gradient(135deg,#3b82f6,#8b5cf6)' : 'rgba(var(--overlay-rgb),0.06)', color: step >= i ? '#fff' : 'var(--text-muted)', transition: 'all 0.3s', flexShrink: 0 }}>
                 {step > i ? <CheckCircle size={14} /> : i + 1}
               </div>
               <span style={{ fontSize: 13, fontWeight: 500, color: step >= i ? 'var(--text-secondary)' : 'var(--text-muted)', whiteSpace: 'nowrap' }}>{s}</span>
             </div>
-            {i < STEPS.length - 1 && <div style={{ flex: 1, height: 1, background: step > i ? 'linear-gradient(to right,#3b82f6,#8b5cf6)' : 'rgba(var(--overlay-rgb),0.06)', margin: '0 12px', transition: 'all 0.5s' }} />}
+            {i < STEPS.length - 1 && <div style={{ flex: 1, minWidth: 40, height: 1, background: step > i ? 'linear-gradient(to right,#3b82f6,#8b5cf6)' : 'rgba(var(--overlay-rgb),0.06)', margin: '0 12px', transition: 'all 0.5s' }} />}
           </div>
         ))}
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div className="flex flex-col gap-5">
         {/* Resume Upload */}
-        <div className="glass-card" style={{ padding: 28 }}>
+        <div className="glass-card p-5 md:p-7">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
             <FileText size={18} color="#3b82f6" />
             <h2 style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)' }}>Resume (PDF)</h2>
@@ -149,7 +149,7 @@ export default function UploadPage() {
         </div>
 
         {/* Job Description */}
-        <div className="glass-card" style={{ padding: 28 }}>
+        <div className="glass-card p-5 md:p-7">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
             <Briefcase size={18} color="#8b5cf6" />
             <h2 style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)' }}>Job Description</h2>
@@ -170,7 +170,7 @@ export default function UploadPage() {
 
         {/* Progress / Analyze */}
         {loading ? (
-          <div className="glass-card" style={{ padding: 28 }}>
+          <div className="glass-card p-5 md:p-7">
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
               <div style={{ width: 20, height: 20, border: '2px solid rgba(59,130,246,0.3)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
               <span style={{ fontWeight: 500, color: 'var(--text-secondary)', fontSize: 14 }}>{progressLabel}</span>

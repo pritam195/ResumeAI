@@ -33,8 +33,8 @@ export default function LandingPage() {
   return (
     <div>
       {/* Hero */}
-      <div className="hero-bg" style={{ minHeight: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center', padding: '60px 24px' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
+      <div className="hero-bg flex items-center py-10 px-4 md:py-[60px] md:px-6 min-h-[calc(100vh-64px)]">
+        <div className="max-w-[900px] mx-auto text-center">
           {/* Badge */}
           <div className="animate-fade-up" style={{ animationDelay: '0ms', display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 16px', background: 'rgba(59,130,246,0.12)', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 999, marginBottom: 32 }}>
             <Zap size={14} color="#3b82f6" />
@@ -72,7 +72,7 @@ export default function LandingPage() {
       </div>
 
       {/* Features */}
-      <div style={{ padding: '80px 24px', maxWidth: 1100, margin: '0 auto' }}>
+      <div className="py-12 px-4 md:py-20 md:px-6 max-w-[1100px] mx-auto">
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
           <h2 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 36, color: 'var(--text-primary)', marginBottom: 12 }}>
             Everything you need to <span className="gradient-text">get hired</span>
@@ -93,7 +93,7 @@ export default function LandingPage() {
       </div>
 
       {/* How it Works / Evaluation */}
-      <div style={{ padding: '80px 24px', maxWidth: 1100, margin: '0 auto', background: 'rgba(var(--overlay-rgb), 0.02)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+      <div className="py-12 px-4 md:py-20 md:px-6 max-w-[1100px] mx-auto border-y border-[var(--border)]" style={{ background: 'rgba(var(--overlay-rgb), 0.02)' }}>
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
           <h2 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 36, color: 'var(--text-primary)', marginBottom: 12 }}>
             How your <span className="gradient-text">ATS Score</span> is evaluated
@@ -103,9 +103,9 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 800, margin: '0 auto' }}>
+        <div className="flex flex-col gap-6 max-w-[800px] mx-auto">
           {howItWorks.map((item, i) => (
-            <div key={item.step} className="glass-card animate-fade-up" style={{ animationDelay: `${i * 100}ms`, padding: '24px 32px', display: 'flex', gap: 24, alignItems: 'center' }}>
+            <div key={item.step} className="glass-card animate-fade-up flex flex-col md:flex-row gap-6 items-center text-center md:text-left p-6 md:py-6 md:px-8" style={{ animationDelay: `${i * 100}ms` }}>
               <div style={{ flexShrink: 0, width: 64, height: 64, borderRadius: 16, background: `${item.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                 <item.icon size={28} color={item.color} />
                 <div style={{ position: 'absolute', top: -10, left: -10, width: 28, height: 28, borderRadius: '50%', background: item.color, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, border: '4px solid var(--bg-primary)' }}>
@@ -122,8 +122,8 @@ export default function LandingPage() {
       </div>
 
       {/* CTA Banner */}
-      <div style={{ padding: '80px 24px' }}>
-        <div style={{ maxWidth: 700, margin: '0 auto', background: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15))', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 24, padding: '48px 40px', textAlign: 'center' }}>
+      <div className="py-12 px-4 md:py-20 md:px-6">
+        <div className="max-w-[700px] mx-auto rounded-3xl p-8 md:p-[48px_40px] text-center" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15))', border: '1px solid rgba(59,130,246,0.25)' }}>
           <h2 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 30, color: 'var(--text-primary)', marginBottom: 12 }}>Ready to get your score?</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: 28, fontSize: 15 }}>{user ? 'Upload your resume and job description to get instant feedback.' : 'Sign in with Google and analyze your first resume in seconds.'}</p>
           <Link to={user ? '/upload' : '/login'} className="btn-primary" style={{ fontSize: 15, padding: '13px 28px' }}>

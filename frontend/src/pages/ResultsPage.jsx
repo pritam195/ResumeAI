@@ -102,7 +102,7 @@ export default function ResultsPage() {
   const tabs = ['overview', 'skills', 'ai-feedback']
 
   return (
-    <div style={{ maxWidth: 1000, margin: '0 auto', padding: '40px 24px', minHeight: 'calc(100vh - 64px)' }}>
+    <div className="max-w-[1000px] mx-auto py-8 px-4 md:py-10 md:px-6 min-h-[calc(100vh-64px)]">
       {/* Top bar */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap', gap: 12 }}>
         <div>
@@ -121,7 +121,7 @@ export default function ResultsPage() {
       <div style={{ display: 'flex', gap: 24, flexDirection: 'column', alignItems: 'flex-start' }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           {/* Tabs */}
-          <div style={{ display: 'flex', gap: 4, marginBottom: 28, background: 'rgba(var(--overlay-rgb),0.03)', borderRadius: 12, padding: 4, border: '1px solid var(--border)', width: 'fit-content' }}>
+          <div className="flex gap-1 mb-7 bg-[rgba(var(--overlay-rgb),0.03)] rounded-xl p-1 border border-[var(--border)] w-fit max-w-full overflow-x-auto hide-scrollbar">
         {tabs.map(t => (
           <button key={t} onClick={() => setActiveTab(t)}
             style={{ padding: '8px 18px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 500, fontFamily: 'Inter, sans-serif', transition: 'all 0.2s', background: activeTab === t ? 'rgba(59,130,246,0.15)' : 'transparent', color: activeTab === t ? '#3b82f6' : 'var(--text-secondary)' }}>
@@ -134,8 +134,8 @@ export default function ResultsPage() {
       {activeTab === 'overview' && (
         <div style={{ display: 'grid', gap: 20 }}>
           {/* Score + grade */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
-            <div className="glass-card" style={{ padding: 32, textAlign: 'center' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="glass-card p-6 md:p-8 text-center">
               <ScoreRing score={result.score} />
               <div style={{ marginTop: 16 }}>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 14px', background: `${grade.color}1a`, border: `1px solid ${grade.color}40`, borderRadius: 999 }}>
@@ -147,7 +147,7 @@ export default function ResultsPage() {
             </div>
 
             {/* Breakdown */}
-            <div className="glass-card" style={{ padding: 28 }}>
+            <div className="glass-card p-5 md:p-7">
               <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <TrendingUp size={16} color="#3b82f6" /> Score Breakdown
               </h3>
@@ -171,7 +171,7 @@ export default function ResultsPage() {
           </div>
 
           {/* Radar chart */}
-          <div className="glass-card" style={{ padding: 28 }}>
+          <div className="glass-card p-5 md:p-7">
             <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 20 }}>Skill Radar</h3>
             <ResponsiveContainer width="100%" height={250}>
               <RadarChart data={radarData}>
@@ -185,7 +185,7 @@ export default function ResultsPage() {
             {/* Metric explanations */}
             <div style={{ marginTop: 24, borderTop: '1px solid var(--border)', paddingTop: 20 }}>
               <p style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 14 }}>What each metric means</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   {
                     color: '#3b82f6',
@@ -226,9 +226,9 @@ export default function ResultsPage() {
           
           {/* Section Scores */}
           {result.section_scores && Object.keys(result.section_scores).length > 0 && (
-            <div className="glass-card" style={{ padding: 28 }}>
+            <div className="glass-card p-5 md:p-7">
               <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 20 }}>Section Analysis (out of 10)</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {Object.entries(result.section_scores).map(([sec, score]) => {
                   const percent = score * 10
                   const color = percent >= 80 ? '#10b981' : percent >= 50 ? '#f59e0b' : '#f43f5e'
@@ -250,7 +250,7 @@ export default function ResultsPage() {
 
           {/* Trend Chart */}
           {history.length > 1 && (
-            <div className="glass-card" style={{ padding: 28 }}>
+            <div className="glass-card p-5 md:p-7">
               <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 20 }}>ATS Score Trend (Last 5)</h3>
               <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={history}>
@@ -281,7 +281,7 @@ export default function ResultsPage() {
       {activeTab === 'ai-feedback' && (
         <div style={{ display: 'grid', gap: 20 }}>
           {result.feedback && (
-            <div className="glass-card" style={{ padding: 28 }}>
+            <div className="glass-card p-5 md:p-7">
               <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Zap size={16} color="#8b5cf6" /> AI Analysis
               </h3>
@@ -289,7 +289,7 @@ export default function ResultsPage() {
             </div>
           )}
           {result.suggestions?.length > 0 && (
-            <div className="glass-card" style={{ padding: 28 }}>
+            <div className="glass-card p-5 md:p-7">
               <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <TrendingUp size={16} color="#10b981" /> Improvement Suggestions
               </h3>
@@ -324,7 +324,7 @@ function SkillSection({ title, skills = [], type, count }) {
   const colorMap = { matched: '#10b981', missing: '#f43f5e', extra: '#3b82f6' }
 
   return (
-    <div className="glass-card" style={{ padding: 24 }}>
+    <div className="glass-card p-5 md:p-6">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
         <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>{title}</h3>
         <span style={{ padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600, background: `${colorMap[type]}1a`, color: colorMap[type] }}>{count}</span>

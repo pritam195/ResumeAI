@@ -27,12 +27,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ minHeight: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+    <div className="flex items-center justify-center p-4 md:p-6 min-h-[calc(100vh-64px)]">
       {/* Decorative blobs */}
       <div style={{ position: 'fixed', top: '20%', left: '10%', width: 300, height: 300, background: 'radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
       <div style={{ position: 'fixed', bottom: '20%', right: '10%', width: 250, height: 250, background: 'radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
 
-      <div className="glass-card animate-fade-up" style={{ width: '100%', maxWidth: 420, padding: 44 }}>
+      <div className="glass-card animate-fade-up w-full max-w-[420px] p-6 md:p-11">
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
           <div style={{ width: 56, height: 56, borderRadius: 16, background: 'linear-gradient(135deg,#3b82f6,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }} className="animate-pulse-glow">

@@ -61,7 +61,7 @@ export default function HistoryPage() {
   }
 
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 24px', minHeight: 'calc(100vh - 64px)' }}>
+    <div className="max-w-[900px] mx-auto py-8 px-4 md:py-10 md:px-6 min-h-[calc(100vh-64px)]">
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap', gap: 12 }}>
         <div>
@@ -77,7 +77,7 @@ export default function HistoryPage() {
 
       {/* Stats bar */}
       {!loading && analyses.length > 0 && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 14, marginBottom: 28 }}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-7">
           {[
             { label: 'Total Analyses', value: analyses.length, color: '#3b82f6' },
             { label: 'Best Score', value: `${Math.max(...analyses.map(a => a.score))}%`, color: '#10b981' },
@@ -110,9 +110,9 @@ export default function HistoryPage() {
           {analyses.map((a, i) => {
             const grade = GRADE(a.score)
             return (
-              <div key={a._id} className="glass-card animate-fade-up" style={{ animationDelay: `${i * 60}ms`, padding: 24 }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
-                  <div style={{ flex: 1 }}>
+              <div key={a._id} className="glass-card animate-fade-up p-5 md:p-6" style={{ animationDelay: `${i * 60}ms` }}>
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-4 md:gap-6">
+                  <div className="w-full sm:w-auto sm:flex-1">
                     {/* JD snippet */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                       <Award size={14} color={grade.color} />
@@ -135,7 +135,7 @@ export default function HistoryPage() {
                   </div>
 
                   {/* Score + actions */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+                  <div className="flex flex-row sm:flex-col items-center justify-between sm:justify-start gap-4 sm:gap-3 shrink-0 w-full sm:w-auto mt-2 sm:mt-0 pt-4 sm:pt-0 border-t border-[var(--border)] sm:border-0">
                     <div style={{ position: 'relative', width: 64, height: 64 }}>
                       <svg width="64" height="64" viewBox="0 0 64 64">
                         <circle cx="32" cy="32" r="26" fill="none" stroke="var(--border)" strokeWidth="5" />
