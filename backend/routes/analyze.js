@@ -34,10 +34,18 @@ router.post('/analyze', verifyToken, upload.single('resume'), async (req, res) =
     });
     form.append('job_description', job_description);
 
+    // Wake up the ML service if it's sleeping (Render free tier cold start)
+    const ML_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000';
+    try {
+      await axios.get(`${ML_URL}/health`, { timeout: 30000 });
+    } catch (e) {
+      console.warn('ML service warm-up ping failed, proceeding anyway:', e.message);
+    }
+
     const mlResponse = await axios.post(
-      `${process.env.ML_SERVICE_URL || 'http://localhost:8000'}/analyze`,
+      `${ML_URL}/analyze`,
       form,
-      { headers: form.getHeaders(), timeout: 120000 }
+      { headers: form.getHeaders(), timeout: 150000 }
     );
 
     const mlData = mlResponse.data;
