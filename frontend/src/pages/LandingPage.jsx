@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useEffect } from 'react'
-import { Zap, ArrowRight, CheckCircle, Brain, BarChart3, Shield } from 'lucide-react'
+import { Zap, ArrowRight, CheckCircle, Brain, BarChart3, Shield, Search, Layers, PieChart, FileText } from 'lucide-react'
 
 const features = [
   { icon: Brain, title: 'AI-Powered Analysis', desc: 'Advanced NLP and semantic matching using Hugging Face transformers', color: '#3b82f6' },
@@ -17,13 +17,18 @@ const stats = [
   { value: 'GPT-4', label: 'AI Powered' },
 ]
 
+const howItWorks = [
+  { step: '1', title: 'Text Extraction', desc: 'Your PDF resume is parsed to extract clean text, preserving the logical flow of your experience and skills.', icon: FileText, color: '#3b82f6' },
+  { step: '2', title: 'Skill Identification', desc: 'Our NLP engine identifies hard skills, soft skills, and tools from both your resume and the job description.', icon: Search, color: '#8b5cf6' },
+  { step: '3', title: 'Semantic Matching', desc: 'A Hugging Face transformer model calculates the semantic similarity between your experience and the job requirements.', icon: Layers, color: '#f59e0b' },
+  { step: '4', title: 'Score Generation', desc: 'We combine keyword matches, semantic similarity, and resume quality metrics to generate your final ATS score.', icon: PieChart, color: '#10b981' },
+]
+
 export default function LandingPage() {
   const { user } = useAuth()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (user) navigate('/upload')
-  }, [user, navigate])
+
 
   return (
     <div>
@@ -37,20 +42,20 @@ export default function LandingPage() {
           </div>
 
           {/* Headline */}
-          <h1 className="animate-fade-up" style={{ animationDelay: '100ms', fontFamily: 'Outfit, sans-serif', fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 24, color: '#f1f5f9' }}>
+          <h1 className="animate-fade-up" style={{ animationDelay: '100ms', fontFamily: 'Outfit, sans-serif', fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 24, color: 'var(--text-primary)' }}>
             Land Your Dream Job<br />
             <span className="gradient-text">Beat the ATS System</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="animate-fade-up" style={{ animationDelay: '200ms', fontSize: 18, color: '#94a3b8', lineHeight: 1.7, maxWidth: 600, margin: '0 auto 40px', fontWeight: 400 }}>
+          <p className="animate-fade-up" style={{ animationDelay: '200ms', fontSize: 18, color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: 600, margin: '0 auto 40px', fontWeight: 400 }}>
             Upload your resume, paste a job description, and get an instant AI-powered match score with detailed skill gap analysis and personalized feedback.
           </p>
 
           {/* CTAs */}
           <div className="animate-fade-up" style={{ animationDelay: '300ms', display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
-            <Link to="/login" className="btn-primary" style={{ fontSize: 16, padding: '14px 32px' }}>
-              Get Started Free <ArrowRight size={18} />
+            <Link to={user ? '/upload' : '/login'} className="btn-primary" style={{ fontSize: 16, padding: '14px 32px' }}>
+              {user ? 'Analyze a Resume' : 'Get Started Free'} <ArrowRight size={18} />
             </Link>
           </div>
 
@@ -59,7 +64,7 @@ export default function LandingPage() {
             {stats.map(s => (
               <div key={s.label} style={{ textAlign: 'center' }}>
                 <div style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 28, background: 'linear-gradient(135deg,#3b82f6,#8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{s.value}</div>
-                <div style={{ fontSize: 13, color: '#64748b', marginTop: 4 }}>{s.label}</div>
+                <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -69,10 +74,10 @@ export default function LandingPage() {
       {/* Features */}
       <div style={{ padding: '80px 24px', maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
-          <h2 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 36, color: '#f1f5f9', marginBottom: 12 }}>
+          <h2 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 36, color: 'var(--text-primary)', marginBottom: 12 }}>
             Everything you need to <span className="gradient-text">get hired</span>
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: 16 }}>Powered by state-of-the-art AI and NLP models</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 16 }}>Powered by state-of-the-art AI and NLP models</p>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
           {features.map((f, i) => (
@@ -80,19 +85,48 @@ export default function LandingPage() {
               <div style={{ width: 48, height: 48, borderRadius: 12, background: `${f.color}1a`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
                 <f.icon size={22} color={f.color} />
               </div>
-              <h3 style={{ fontWeight: 600, fontSize: 16, color: '#f1f5f9', marginBottom: 8 }}>{f.title}</h3>
-              <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.6 }}>{f.desc}</p>
+              <h3 style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-primary)', marginBottom: 8 }}>{f.title}</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.6 }}>{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* How it Works / Evaluation */}
+      <div style={{ padding: '80px 24px', maxWidth: 1100, margin: '0 auto', background: 'rgba(var(--overlay-rgb), 0.02)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ textAlign: 'center', marginBottom: 56 }}>
+          <h2 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 36, color: 'var(--text-primary)', marginBottom: 12 }}>
+            How your <span className="gradient-text">ATS Score</span> is evaluated
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 16, maxWidth: 600, margin: '0 auto' }}>
+            We look beyond simple keyword matching. Our AI reads your resume like a human recruiter would, combined with the strict parsing rules of enterprise ATS software.
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 800, margin: '0 auto' }}>
+          {howItWorks.map((item, i) => (
+            <div key={item.step} className="glass-card animate-fade-up" style={{ animationDelay: `${i * 100}ms`, padding: '24px 32px', display: 'flex', gap: 24, alignItems: 'center' }}>
+              <div style={{ flexShrink: 0, width: 64, height: 64, borderRadius: 16, background: `${item.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                <item.icon size={28} color={item.color} />
+                <div style={{ position: 'absolute', top: -10, left: -10, width: 28, height: 28, borderRadius: '50%', background: item.color, color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, border: '4px solid var(--bg-primary)' }}>
+                  {item.step}
+                </div>
+              </div>
+              <div>
+                <h3 style={{ fontWeight: 700, fontSize: 18, color: 'var(--text-primary)', marginBottom: 8 }}>{item.title}</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: 15, lineHeight: 1.6 }}>{item.desc}</p>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
       {/* CTA Banner */}
-      <div style={{ padding: '0 24px 80px' }}>
+      <div style={{ padding: '80px 24px' }}>
         <div style={{ maxWidth: 700, margin: '0 auto', background: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15))', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 24, padding: '48px 40px', textAlign: 'center' }}>
-          <h2 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 30, color: '#f1f5f9', marginBottom: 12 }}>Ready to get your score?</h2>
-          <p style={{ color: '#94a3b8', marginBottom: 28, fontSize: 15 }}>Sign in with Google and analyze your first resume in seconds.</p>
-          <Link to="/login" className="btn-primary" style={{ fontSize: 15, padding: '13px 28px' }}>
+          <h2 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 700, fontSize: 30, color: 'var(--text-primary)', marginBottom: 12 }}>Ready to get your score?</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: 28, fontSize: 15 }}>{user ? 'Upload your resume and job description to get instant feedback.' : 'Sign in with Google and analyze your first resume in seconds.'}</p>
+          <Link to={user ? '/upload' : '/login'} className="btn-primary" style={{ fontSize: 15, padding: '13px 28px' }}>
             Start Analyzing <ArrowRight size={16} />
           </Link>
         </div>

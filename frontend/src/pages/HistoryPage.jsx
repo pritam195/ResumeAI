@@ -65,10 +65,10 @@ export default function HistoryPage() {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h1 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 30, color: '#f1f5f9', marginBottom: 6 }}>
+          <h1 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 30, color: 'var(--text-primary)', marginBottom: 6 }}>
             Analysis <span className="gradient-text">History</span>
           </h1>
-          <p style={{ color: '#64748b', fontSize: 14 }}>Track all your resume analyses and score progression</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Track all your resume analyses and score progression</p>
         </div>
         <Link to="/upload" className="btn-primary" style={{ fontSize: 13, padding: '10px 20px' }}>
           <Zap size={15} /> New Analysis
@@ -85,7 +85,7 @@ export default function HistoryPage() {
           ].map(s => (
             <div key={s.label} className="glass-card" style={{ padding: '16px 20px', textAlign: 'center' }}>
               <div style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 26, color: s.color }}>{s.value}</div>
-              <div style={{ fontSize: 12, color: '#475569', marginTop: 4 }}>{s.label}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -101,8 +101,8 @@ export default function HistoryPage() {
           <div style={{ width: 72, height: 72, borderRadius: 20, background: 'rgba(59,130,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
             <Clock size={32} color="#3b82f6" />
           </div>
-          <h3 style={{ fontWeight: 600, fontSize: 18, color: '#f1f5f9', marginBottom: 8 }}>No analyses yet</h3>
-          <p style={{ color: '#475569', marginBottom: 24, fontSize: 14 }}>Upload your first resume to see results here</p>
+          <h3 style={{ fontWeight: 600, fontSize: 18, color: 'var(--text-primary)', marginBottom: 8 }}>No analyses yet</h3>
+          <p style={{ color: 'var(--text-muted)', marginBottom: 24, fontSize: 14 }}>Upload your first resume to see results here</p>
           <Link to="/upload" className="btn-primary">Start Analyzing</Link>
         </div>
       ) : (
@@ -117,10 +117,10 @@ export default function HistoryPage() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                       <Award size={14} color={grade.color} />
                       <span style={{ fontSize: 12, fontWeight: 600, color: grade.color }}>{grade.label}</span>
-                      <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#334155' }} />
-                      <span style={{ fontSize: 12, color: '#475569' }}>{new Date(a.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                      <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'var(--text-muted)' }} />
+                      <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{new Date(a.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     </div>
-                    <p style={{ color: '#94a3b8', fontSize: 13, lineHeight: 1.5, marginBottom: 12, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.5, marginBottom: 12, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                       {a.job_description?.slice(0, 160)}...
                     </p>
                     {/* Skill badges */}
@@ -138,7 +138,7 @@ export default function HistoryPage() {
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, flexShrink: 0 }}>
                     <div style={{ position: 'relative', width: 64, height: 64 }}>
                       <svg width="64" height="64" viewBox="0 0 64 64">
-                        <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="5" />
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="var(--border)" strokeWidth="5" />
                         <circle cx="32" cy="32" r="26" fill="none" stroke={grade.color} strokeWidth="5"
                           strokeDasharray={2 * Math.PI * 26}
                           strokeDashoffset={2 * Math.PI * 26 * (1 - a.score / 100)}

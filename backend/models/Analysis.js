@@ -12,6 +12,8 @@ const analysisSchema = new mongoose.Schema({
   jd_categories: { type: Map, of: [String] },
   resume_quality: { type: mongoose.Schema.Types.Mixed },
   score: { type: Number, required: true },
+  section_scores: { type: Map, of: Number },
+  pdf_url: { type: String },
   breakdown: {
     core: Number,
     secondary: Number,

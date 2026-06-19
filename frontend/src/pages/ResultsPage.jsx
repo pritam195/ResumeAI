@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 import axios from 'axios'
 import { CheckCircle, XCircle, Plus, Zap, ArrowLeft, History, TrendingUp, Award } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts'
+import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip, LineChart, Line, XAxis, YAxis, CartesianGrid } from 'recharts'
 
 function ScoreRing({ score }) {
   const r = 60
@@ -30,7 +30,7 @@ function ScoreRing({ score }) {
   return (
     <div style={{ position: 'relative', width: 160, height: 160, margin: '0 auto' }}>
       <svg width="160" height="160" viewBox="0 0 160 160">
-        <circle cx="80" cy="80" r={r} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="10" />
+        <circle cx="80" cy="80" r={r} fill="none" stroke="var(--border)" strokeWidth="10" />
         <circle cx="80" cy="80" r={r} fill="none" stroke={color} strokeWidth="10"
           strokeDasharray={circ} strokeDashoffset={offset}
           strokeLinecap="round" className="score-ring"
@@ -38,7 +38,7 @@ function ScoreRing({ score }) {
       </svg>
       <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <span style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 38, color, lineHeight: 1 }}>{displayed}</span>
-        <span style={{ fontSize: 13, color: '#64748b', fontWeight: 500 }}>/ 100</span>
+        <span style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: 500 }}>/ 100</span>
       </div>
     </div>
   )
@@ -50,6 +50,7 @@ export default function ResultsPage() {
   const { id } = useParams()
   const { getToken } = useAuth()
   const [result, setResult] = useState(null)
+  const [history, setHistory] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('overview')
 
@@ -59,6 +60,11 @@ export default function ResultsPage() {
         const token = await getToken()
         const { data } = await axios.get(`/api/result/${id}`, { headers: { Authorization: `Bearer ${token}` } })
         setResult(data)
+        
+        const histRes = await axios.get(`/api/history`, { headers: { Authorization: `Bearer ${token}` } })
+        if (histRes.data && histRes.data.analyses) {
+          setHistory(histRes.data.analyses.slice(0, 5).reverse())
+        }
       } catch {
         toast.error('Failed to load results')
       } finally {
@@ -71,15 +77,15 @@ export default function ResultsPage() {
   if (loading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 'calc(100vh - 64px)' }}>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ width: 48, height: 48, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
-        <p style={{ color: '#64748b' }}>Loading results...</p>
+        <div style={{ width: 48, height: 48, border: '3px solid var(--border)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
+        <p style={{ color: 'var(--text-secondary)' }}>Loading results...</p>
       </div>
     </div>
   )
 
   if (!result) return (
     <div style={{ textAlign: 'center', padding: '80px 24px' }}>
-      <p style={{ color: '#64748b', fontSize: 16 }}>Result not found</p>
+      <p style={{ color: 'var(--text-secondary)', fontSize: 16 }}>Result not found</p>
       <Link to="/upload" className="btn-primary" style={{ marginTop: 16 }}>Analyze New Resume</Link>
     </div>
   )
@@ -100,11 +106,11 @@ export default function ResultsPage() {
       {/* Top bar */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <Link to="/history" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#64748b', textDecoration: 'none', fontSize: 13, marginBottom: 8 }}>
+          <Link to="/history" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--text-secondary)', textDecoration: 'none', fontSize: 13, marginBottom: 8 }}>
             <ArrowLeft size={14} /> Back to History
           </Link>
-          <h1 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 28, color: '#f1f5f9' }}>Analysis <span className="gradient-text">Results</span></h1>
-          <p style={{ color: '#475569', fontSize: 13, marginTop: 4 }}>{new Date(result.created_at).toLocaleString()}</p>
+          <h1 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 28, color: 'var(--text-primary)' }}>Analysis <span className="gradient-text">Results</span></h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>{new Date(result.created_at).toLocaleString()}</p>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
           <Link to="/upload" className="btn-primary" style={{ fontSize: 13, padding: '9px 18px' }}><Zap size={14} /> New Analysis</Link>
@@ -112,11 +118,13 @@ export default function ResultsPage() {
         </div>
       </div>
 
-      {/* Tabs */}
-      <div style={{ display: 'flex', gap: 4, marginBottom: 28, background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4, border: '1px solid rgba(255,255,255,0.06)', width: 'fit-content' }}>
+      <div style={{ display: 'flex', gap: 24, flexDirection: 'column', alignItems: 'flex-start' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          {/* Tabs */}
+          <div style={{ display: 'flex', gap: 4, marginBottom: 28, background: 'rgba(var(--overlay-rgb),0.03)', borderRadius: 12, padding: 4, border: '1px solid var(--border)', width: 'fit-content' }}>
         {tabs.map(t => (
           <button key={t} onClick={() => setActiveTab(t)}
-            style={{ padding: '8px 18px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 500, fontFamily: 'Inter, sans-serif', transition: 'all 0.2s', background: activeTab === t ? 'rgba(59,130,246,0.15)' : 'transparent', color: activeTab === t ? '#3b82f6' : '#64748b' }}>
+            style={{ padding: '8px 18px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 500, fontFamily: 'Inter, sans-serif', transition: 'all 0.2s', background: activeTab === t ? 'rgba(59,130,246,0.15)' : 'transparent', color: activeTab === t ? '#3b82f6' : 'var(--text-secondary)' }}>
             {t === 'overview' ? '📊 Overview' : t === 'skills' ? '🎯 Skills' : '✨ AI Feedback'}
           </button>
         ))}
@@ -134,13 +142,13 @@ export default function ResultsPage() {
                   <Award size={13} color={grade.color} />
                   <span style={{ color: grade.color, fontWeight: 600, fontSize: 13 }}>{grade.label} Match</span>
                 </div>
-                <p style={{ color: '#475569', fontSize: 13, marginTop: 10 }}>ATS Compatibility Score</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 10 }}>ATS Compatibility Score</p>
               </div>
             </div>
 
             {/* Breakdown */}
             <div className="glass-card" style={{ padding: 28 }}>
-              <h3 style={{ fontWeight: 600, fontSize: 15, color: '#f1f5f9', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <TrendingUp size={16} color="#3b82f6" /> Score Breakdown
               </h3>
               {[
@@ -151,7 +159,7 @@ export default function ResultsPage() {
               ].map(item => (
                 <div key={item.label} style={{ marginBottom: 14 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                    <span style={{ fontSize: 13, color: '#94a3b8' }}>{item.label}</span>
+                    <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{item.label}</span>
                     <span style={{ fontSize: 13, fontWeight: 600, color: item.color }}>{Math.round(item.value)}%</span>
                   </div>
                   <div className="progress-bar">
@@ -164,20 +172,20 @@ export default function ResultsPage() {
 
           {/* Radar chart */}
           <div className="glass-card" style={{ padding: 28 }}>
-            <h3 style={{ fontWeight: 600, fontSize: 15, color: '#f1f5f9', marginBottom: 20 }}>Skill Radar</h3>
+            <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 20 }}>Skill Radar</h3>
             <ResponsiveContainer width="100%" height={250}>
               <RadarChart data={radarData}>
-                <PolarGrid stroke="rgba(255,255,255,0.06)" />
-                <PolarAngleAxis dataKey="skill" tick={{ fill: '#64748b', fontSize: 12 }} />
+                <PolarGrid stroke="var(--border)" />
+                <PolarAngleAxis dataKey="skill" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} />
                 <Radar name="Score" dataKey="value" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.15} strokeWidth={2} />
-                <Tooltip contentStyle={{ background: '#1e293b', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: '#f1f5f9', fontSize: 13 }} formatter={(v) => [`${v}%`, 'Score']} />
+                <Tooltip contentStyle={{ background: 'var(--bg-tooltip)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-primary)', fontSize: 13 }} formatter={(v) => [`${v}%`, 'Score']} />
               </RadarChart>
             </ResponsiveContainer>
 
             {/* Metric explanations */}
-            <div style={{ marginTop: 24, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 20 }}>
-              <p style={{ fontSize: 12, color: '#475569', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 14 }}>What each metric means</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+            <div style={{ marginTop: 24, borderTop: '1px solid var(--border)', paddingTop: 20 }}>
+              <p style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 14 }}>What each metric means</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
                 {[
                   {
                     color: '#3b82f6',
@@ -204,33 +212,31 @@ export default function ResultsPage() {
                     desc: 'How strong your resume is on its own — independent of the job description. Covers resume structure, ATS formatting, achievements with numbers, contact completeness, and keyword density.',
                   },
                 ].map(m => (
-                  <div key={m.title} style={{ padding: '12px 14px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 10, borderLeft: `3px solid ${m.color}` }}>
+                  <div key={m.title} style={{ padding: '12px 14px', background: 'rgba(var(--overlay-rgb),0.02)', border: '1px solid rgba(var(--overlay-rgb),0.05)', borderRadius: 10, borderLeft: `3px solid ${m.color}` }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
                       <span style={{ color: m.color, fontSize: 9 }}>{m.dot}</span>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: '#e2e8f0' }}>{m.title}</span>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{m.title}</span>
                     </div>
-                    <p style={{ fontSize: 12, color: '#64748b', lineHeight: 1.65, margin: 0 }}>{m.desc}</p>
+                    <p style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>{m.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
           
-          {/* Quality Metrics */}
-          {result.resume_quality && result.resume_quality.scores && (
+          {/* Section Scores */}
+          {result.section_scores && Object.keys(result.section_scores).length > 0 && (
             <div className="glass-card" style={{ padding: 28 }}>
-              <h3 style={{ fontWeight: 600, fontSize: 15, color: '#f1f5f9', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Award size={16} color="#10b981" /> Document Quality Checks
-              </h3>
+              <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 20 }}>Section Analysis (out of 10)</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
-                {Object.entries(result.resume_quality.scores).map(([key, val]) => {
-                  const percent = Math.round(val * 100)
+                {Object.entries(result.section_scores).map(([sec, score]) => {
+                  const percent = score * 10
                   const color = percent >= 80 ? '#10b981' : percent >= 50 ? '#f59e0b' : '#f43f5e'
                   return (
-                    <div key={key}>
+                    <div key={sec}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-                        <span style={{ fontSize: 13, color: '#94a3b8', textTransform: 'capitalize' }}>{key.replace(/_/g, ' ')}</span>
-                        <span style={{ fontSize: 13, fontWeight: 600, color }}>{percent}/100</span>
+                        <span style={{ fontSize: 13, color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{sec}</span>
+                        <span style={{ fontSize: 13, fontWeight: 600, color }}>{score}/10</span>
                       </div>
                       <div className="progress-bar" style={{ height: 6 }}>
                         <div className="progress-fill" style={{ width: `${percent}%`, background: color }} />
@@ -239,6 +245,22 @@ export default function ResultsPage() {
                   )
                 })}
               </div>
+            </div>
+          )}
+
+          {/* Trend Chart */}
+          {history.length > 1 && (
+            <div className="glass-card" style={{ padding: 28 }}>
+              <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 20 }}>ATS Score Trend (Last 5)</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={history}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                  <XAxis dataKey="created_at" tickFormatter={(t) => new Date(t).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <YAxis domain={[0, 100]} tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ background: 'var(--bg-tooltip)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-primary)' }} labelFormatter={(t) => new Date(t).toLocaleDateString()} />
+                  <Line type="monotone" dataKey="score" stroke="#10b981" strokeWidth={3} dot={{ r: 4, fill: '#10b981' }} activeDot={{ r: 6 }} />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           )}
         </div>
@@ -251,23 +273,7 @@ export default function ResultsPage() {
           <SkillSection title="❌ Missing Skills" skills={result.missing_skills} type="missing" count={result.missing_skills?.length} />
           <SkillSection title="✨ Extra Skills" skills={result.extra_skills} type="extra" count={result.extra_skills?.length} />
           
-          {result.skill_categories && Object.keys(result.skill_categories).length > 0 && (
-            <div className="glass-card" style={{ padding: 28, marginTop: 16 }}>
-              <h3 style={{ fontWeight: 600, fontSize: 16, color: '#f1f5f9', marginBottom: 20 }}>Categorized Breakdown (Your Resume)</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 }}>
-                {Object.entries(result.skill_categories).map(([cat, skills]) => (
-                   <div key={cat} style={{ background: 'rgba(255,255,255,0.02)', padding: 16, borderRadius: 12, border: '1px solid rgba(255,255,255,0.05)' }}>
-                     <h4 style={{ color: '#94a3b8', fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12 }}>{cat}</h4>
-                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                       {skills.map(s => (
-                         <span key={s} style={{ fontSize: 12, color: '#cbd5e1', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: 6 }}>{s}</span>
-                       ))}
-                     </div>
-                   </div>
-                ))}
-              </div>
-            </div>
-          )}
+
         </div>
       )}
 
@@ -276,22 +282,29 @@ export default function ResultsPage() {
         <div style={{ display: 'grid', gap: 20 }}>
           {result.feedback && (
             <div className="glass-card" style={{ padding: 28 }}>
-              <h3 style={{ fontWeight: 600, fontSize: 15, color: '#f1f5f9', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <Zap size={16} color="#8b5cf6" /> AI Analysis
               </h3>
-              <p style={{ color: '#94a3b8', lineHeight: 1.8, fontSize: 15 }}>{result.feedback}</p>
+              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, fontSize: 15 }}>{result.feedback}</p>
             </div>
           )}
           {result.suggestions?.length > 0 && (
             <div className="glass-card" style={{ padding: 28 }}>
-              <h3 style={{ fontWeight: 600, fontSize: 15, color: '#f1f5f9', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <TrendingUp size={16} color="#10b981" /> Improvement Suggestions
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {result.suggestions.map((s, i) => (
                   <div key={i} style={{ display: 'flex', gap: 12, padding: '12px 16px', background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)', borderRadius: 10 }}>
                     <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(16,185,129,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 11, color: '#10b981', flexShrink: 0 }}>{i + 1}</div>
-                    <p style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.6, margin: 0 }}>{s}</p>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.6, margin: 0 }}>
+                      {s.includes(':') && s.indexOf(':') < 35 ? (
+                        <>
+                          <strong style={{ color: 'var(--text-primary)' }}>{s.substring(0, s.indexOf(':') + 1)}</strong>
+                          {s.substring(s.indexOf(':') + 1)}
+                        </>
+                      ) : s}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -299,6 +312,8 @@ export default function ResultsPage() {
           )}
         </div>
       )}
+        </div>
+      </div>
     </div>
   )
 }
@@ -311,11 +326,11 @@ function SkillSection({ title, skills = [], type, count }) {
   return (
     <div className="glass-card" style={{ padding: 24 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h3 style={{ fontWeight: 600, fontSize: 15, color: '#f1f5f9' }}>{title}</h3>
+        <h3 style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>{title}</h3>
         <span style={{ padding: '3px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600, background: `${colorMap[type]}1a`, color: colorMap[type] }}>{count}</span>
       </div>
       {skills.length === 0 ? (
-        <p style={{ color: '#334155', fontSize: 13 }}>None found</p>
+        <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>None found</p>
       ) : (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {skills.map(s => (

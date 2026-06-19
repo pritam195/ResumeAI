@@ -101,17 +101,18 @@ Your suggestions must focus STRICTLY on editing and optimizing their existing re
 
 Provide a JSON response with this exact structure:
 {{
-  "feedback": "A 3-4 sentence personalized analysis of their current fit based purely on their existing experience.",
+  "feedback": "A punchy, 2-sentence maximum personalized analysis of their current fit.",
   "suggestions": [
-    "Hidden Skills: Identify missing JD skills that the candidate might actually possess based on their other listed experience (e.g., if they used Vercel, tell them to explicitly list 'Cloud Platforms').",
-    "Wording Improvements: Suggest specific ways to rephrase their existing project or experience bullets to better align with the core requirements, algorithms, or tone of the JD.",
-    "Keyword Coverage: Suggest specific exact-match keywords or phrases from the JD that the candidate should organically incorporate into their resume if they accurately describe their experience."
+    "Hidden Skills: Identify 1-2 missing JD skills they likely possess based on their experience. Keep this under 2 short sentences.",
+    "Wording Improvements: Provide exactly one concrete example of how to rephrase a specific bullet point. Keep it extremely punchy and under 2 sentences.",
+    "Keyword Coverage: List 3-4 exact-match keywords they should add. Keep it under 2 sentences."
   ]
 }}
 
 IMPORTANT RULES:
 - NEVER suggest taking courses, learning new tools, or building new projects.
-- ALWAYS make suggestions actionable right now (e.g., "Rephrase X to Y", "If you used Z, mention it explicitly").
+- ALWAYS make suggestions actionable right now.
+- BE EXTREMELY CONCISE. Each suggestion must be a maximum of 2 short sentences. Absolutely no fluff or overly long paragraphs.
 - Return ONLY valid JSON."""
 
 

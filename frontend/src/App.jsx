@@ -15,10 +15,10 @@ function App() {
     return (
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        minHeight: '100vh', background: '#0a0f1e'
+        minHeight: '100vh', background: 'var(--bg-primary)'
       }}>
         <div style={{
-          width: 48, height: 48, border: '3px solid rgba(255,255,255,0.1)',
+          width: 48, height: 48, border: '3px solid var(--border)',
           borderTopColor: '#3b82f6', borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }} />
@@ -27,7 +27,7 @@ function App() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0f1e' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />

@@ -19,6 +19,7 @@ from modules.semantic_matcher import compute_similarity
 from modules.scorer          import compute_weighted_score, compute_skill_gap
 from modules.llm_insights    import get_llm_insights
 from modules.resume_quality  import analyze_resume_quality
+from modules.section_analyzer import analyze_sections
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -90,7 +91,7 @@ def analyze():
         )
 
         # ── 8. Gemini AI insights ─────────────────────────────────────────
-        logger.info("[7/7] Generating Gemini AI insights...")
+        logger.info("[7/8] Generating Gemini AI insights...")
         llm_insights = get_llm_insights(
             resume_text     = resume_text,
             job_description = job_description,
@@ -99,7 +100,11 @@ def analyze():
             matched_skills  = skill_gap['matched'],
         )
 
-        # ── 9. Build response ─────────────────────────────────────────────
+        # ── 9. Section Scores ─────────────────────────────────────────────
+        logger.info("[8/8] Computing individual section scores...")
+        section_scores = analyze_sections(resume_text)
+
+        # ── 10. Build response ─────────────────────────────────────────────
         result = {
             # Core
             'resume_text':        resume_text[:3000],
@@ -117,6 +122,7 @@ def analyze():
 
             # Quality breakdown
             'resume_quality':     quality_report,
+            'section_scores':     section_scores,
 
             # AI insights
             'llm_insights':       llm_insights,

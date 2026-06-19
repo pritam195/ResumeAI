@@ -38,10 +38,10 @@ export default function LoginPage() {
           <div style={{ width: 56, height: 56, borderRadius: 16, background: 'linear-gradient(135deg,#3b82f6,#8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }} className="animate-pulse-glow">
             <Zap size={26} color="white" />
           </div>
-          <h1 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 26, color: '#f1f5f9', marginBottom: 8 }}>
+          <h1 style={{ fontFamily: 'Outfit, sans-serif', fontWeight: 800, fontSize: 26, color: 'var(--text-primary)', marginBottom: 8 }}>
             Welcome to <span className="gradient-text">ResumeAI</span>
           </h1>
-          <p style={{ color: '#64748b', fontSize: 14, lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 14, lineHeight: 1.6 }}>
             Sign in to start analyzing your resume against job descriptions
           </p>
         </div>
@@ -49,7 +49,7 @@ export default function LoginPage() {
         {/* Benefits */}
         <div style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)', borderRadius: 12, padding: '14px 16px', marginBottom: 24 }}>
           {['AI-powered ATS score analysis', 'Skill gap detection & suggestions', 'Analysis history & tracking'].map((b, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '5px 0', color: '#94a3b8', fontSize: 13 }}>
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '5px 0', color: 'var(--text-secondary)', fontSize: 13 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'linear-gradient(135deg,#3b82f6,#8b5cf6)', flexShrink: 0 }} />
               {b}
             </div>
@@ -76,7 +76,7 @@ export default function LoginPage() {
           {loading ? 'Signing in...' : 'Continue with Google'}
         </button>
 
-        <p style={{ textAlign: 'center', color: '#334155', fontSize: 12, marginTop: 20 }}>
+        <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 12, marginTop: 20 }}>
           By signing in, you agree to our Terms of Service and Privacy Policy
         </p>
       </div>
